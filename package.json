@@ -10,9 +10,11 @@
   "author": "Wei-Hsuan Wong",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "jio": "^3.35.0",
+    "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.13",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.10"

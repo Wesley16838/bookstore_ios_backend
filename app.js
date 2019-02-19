@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
-const signupRoutes = require('./api/routes/signup')
+const userRoutes = require('./api/routes/user')
 const mongoose = require('mongoose')
 
 // let password = process.env.MONGO_ATLAS_PW || "WESLEY16838"
@@ -26,7 +26,7 @@ app.use((req, res, next)=>{
     next();
 })
 
-app.use('/signup', signupRoutes);
+app.use('/user', userRoutes);
 
 app.use((req, res, next)=>{
     const error = new Error('Not found')

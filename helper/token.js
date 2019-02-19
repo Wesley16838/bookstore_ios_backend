@@ -1,4 +1,4 @@
-var seperator = "|wesleybooktown|";
+var seperator = "|wesley|";
 
 var generate = function(data) {
  //Puts together values of the password, seperator, and phoneNumber
