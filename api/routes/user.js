@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 // const Token = require('../../helper/token')  // const token = Token.generate(req.body)
-
+//////Sign up endpoint
 router.post("/signup", (req, res, next) => {
     User.find({ email: req.body.email })
       .exec()
@@ -49,6 +49,7 @@ router.post("/signup", (req, res, next) => {
       });
   });
 
+//////Login endpoint
 router.post('/login',(req, res, next)=> {
     User.find({email: req.body.email})
     .exec()

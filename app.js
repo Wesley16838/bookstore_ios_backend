@@ -3,9 +3,9 @@ const app = express();
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const userRoutes = require('./api/routes/user')
+const booksRoutes = require('./api/routes/books')
+const ordersRoutes = require('./api/routes/orders')
 const mongoose = require('mongoose')
-
-// let password = process.env.MONGO_ATLAS_PW || "WESLEY16838"
 
 mongoose.set('useCreateIndex', true)
 mongoose.connect('mongodb://localhost/booktown',{ useNewUrlParser: true})
@@ -26,11 +26,19 @@ app.use((req, res, next)=>{
     next();
 })
 
+///user router
 app.use('/user', userRoutes);
 
+///books router
+app.use('/books', booksRoutes);
+
+///orders router
+app.use('/orders', ordersRoutes);
+
+///no router here
 app.use((req, res, next)=>{
     const error = new Error('Not found')
-    error.status= 404 ;
+    error.status = 404 ;
     next(error)
 })
 
