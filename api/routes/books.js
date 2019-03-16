@@ -1,56 +1,48 @@
 const express = require('express')
 const router = express.Router()
 
+const multer = require('multer')
+const checkAuth = require('../middleware/check_auth')
+const BookController = require('../controller/books')
 
-
-router.get('/',(req, res, next) => {
-    res.status(200).json({
-        message: "Handling Get request to /product"
-    })
-})
-
-router.post('/',(req, res, next) => {
-
-   
-    const book = {
-         name:  req.body.name,
-         price:  req.body.price
+const storage = multer.diskStorage({
+    destination: function(req, file, cb){
+        cb(null,'./uploads/')
+    },
+    filename: function(req, file, cb){
+        cb(null,new Date().toISOString() + file.originalname)
     }
-    res.status(201).json({
-        message: "Handling Post request to /product",
-        createBook: book
-    })
 })
 
-router.get('/:productId',(req, res, next) => {
-    const id = req.params.productId
-    if(id === 'special'){
-        res.status(200).json({
-            message: "Handling Get request to /product",
-            id:id
-        })
+const fileFilter = (req, file, cb)=>{
+    if(file.mimetype == 'image/jpeg' || file.mimetype == 'image/png'){
+        cb(null, true)
     }else{
-        res.status(200).json({
-            message: 'You passed an ID'
-        })
+        cb(null, false)
     }
+}
+
+const upload = multer({
+    storage:storage, 
+    limits:{
+        fileSize: 1024*1024*5
+    },
+    fileFilter: fileFilter
 })
 
-router.patch('/:productId',(req, res, next) => {
-   
-        res.status(200).json({
-            message: "Update product!"
-          
-    })
-})
+router.get('/',BookController.books_get_all)
 
-router.delete('/:productId',(req, res, next) => {
-   
-    res.status(200).json({
-        message: "Product deleted!"
-      
-})
-})
+router.post('/', checkAuth, upload.single('bookImage'), BookController.books_create_book )
+
+router.get('/search',BookController.books_get_books)
+
+router.get('/:bookId',BookController.books_get_book)
+
+
+///Send array to this endpoint [{"propName":"name", "value":"blabla"}]
+router.patch('/:bookId', checkAuth, BookController.books_update_book)
+
+router.delete('/:bookId', checkAuth,BookController.books_delete_book)
 
 module.exports = router;
 
